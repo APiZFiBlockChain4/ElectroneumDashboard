@@ -10,6 +10,7 @@
 
 
     <LinearLayout
+        android:id="@+id/ll_main_first"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#2F79D2"
@@ -20,15 +21,15 @@
 
 
         <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="Unpaid Balance"
-        android:textAlignment="center"
-        android:textColor="@android:color/white"
-        android:textSize="13sp"
-        app:layout_constraintTop_toTopOf="parent" />
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Unpaid Balance"
+            android:textAlignment="center"
+            android:textColor="@android:color/white"
+            android:textSize="13sp"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
         <TextView
@@ -84,6 +85,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/ll_main_second"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/white"
@@ -135,6 +137,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/ll_main_third"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
@@ -187,11 +190,11 @@
 
 
         <View
-            android:layout_marginTop="4dp"
             android:layout_width="fill_parent"
             android:layout_height="1dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="64dp"
+            android:layout_marginTop="4dp"
             android:background="#DBDBDB" />
 
         <LinearLayout
@@ -231,11 +234,11 @@
             android:textSize="13sp" />
 
         <View
-            android:layout_marginTop="4dp"
             android:layout_width="fill_parent"
             android:layout_height="1dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="64dp"
+            android:layout_marginTop="4dp"
             android:background="#DBDBDB" />
 
         <TextView
@@ -248,6 +251,73 @@
             android:text="0.25"
             android:textColor="#649FE5"
             android:textSize="28sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_main_error"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@android:color/white">
+
+            <TextView
+
+                android:layout_centerInParent="true"
+                android:id="@+id/Header_Error"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:text="Electroneum Wallet is Invalid"
+                android:textColor="#6B6B6B"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_marginTop="5dp"
+                android:layout_centerInParent="true"
+                android:id="@+id/Detail_Error"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/Header_Error"
+                android:text="Please enter settings to change your wallet"
+                android:textColor="#6B6B6B"
+                android:textSize="9sp"
+                android:textAlignment="center"
+
+                />
+
+            <TextView
+                android:paddingTop="3dp"
+                android:paddingBottom="3dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:layout_marginTop="15dp"
+                android:layout_centerInParent="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/Detail_Error"
+                android:text="Open Settings"
+                android:textSize="13sp"
+                android:textColor="#649FE5"
+                android:textAlignment="center"
+                android:background="@drawable/shape_textview_border"
+                />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            >
+
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>
 

@@ -10,11 +10,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import java.net.MalformedURLException;
 import java.text.DecimalFormat;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
     private static TextView Current_ETN_Price_USD_TextView;
     private static TextView Current_ETN_Price_BTC_TextView;
     private static TextView Current_ETN_Price_Change;
@@ -25,7 +28,10 @@ public class MainActivity extends AppCompatActivity {
     private static TextView Unpaid_BTC_Balance;
     private static TextView Address;
 
-
+    private static LinearLayout First_Linear_Layout;
+    private static LinearLayout Second_Linear_Layout;
+    private static LinearLayout Third_Linear_Layout;
+    private static LinearLayout Error_Linear_Layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +47,10 @@ public class MainActivity extends AppCompatActivity {
         Unpaid_USD_Balance = findViewById(R.id.tv_unpaid_balance_usd);
         Unpaid_BTC_Balance = findViewById(R.id.tv_unpaid_balance_btc);
 
-
+        First_Linear_Layout =  findViewById(R.id.ll_main_first);
+        Second_Linear_Layout = findViewById(R.id.ll_main_second);
+        Third_Linear_Layout = findViewById(R.id.ll_main_third);
+        Error_Linear_Layout = findViewById(R.id.ll_main_error);
         try {
             NetworkUtils.GetNetworkData();
         } catch (MalformedURLException e) {
@@ -56,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         Address = findViewById(R.id.Address);
         NetworkUtils.URLCreator(AddressName);
         Address.setText(AddressName);
-
+        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
     }
 
      public static void UpdateUIWithData() {
@@ -75,6 +84,8 @@ public class MainActivity extends AppCompatActivity {
         df.setMaximumFractionDigits(8);
         Unpaid_USD_Balance.setText(String.valueOf(ETN_to_USD_Float) + " USD");
         Unpaid_BTC_Balance.setText("0" + String.valueOf(df.format( ETN_to_BTC_Float)) + " BTC");
+         Log.i("Updating Data", "Updating");
+         ProvideResult();
     }
 
     public static void CleanUIData() {
@@ -114,4 +125,37 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+    static void ProvideError() {
+        First_Linear_Layout.setVisibility(View.GONE);
+        Second_Linear_Layout.setVisibility(View.GONE);
+        Third_Linear_Layout.setVisibility(View.GONE);
+        Error_Linear_Layout.setVisibility(View.VISIBLE);
+    }
+    static void ProvideResult() {
+        First_Linear_Layout.setVisibility(View.VISIBLE);
+        Second_Linear_Layout.setVisibility(View.VISIBLE);
+        Third_Linear_Layout.setVisibility(View.VISIBLE);
+        Error_Linear_Layout.setVisibility(View.GONE);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Unregister VisualizerActivity as an OnPreferenceChangedListener to avoid any memory leaks.
+        PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
+        if (s.equals(getString(R.string.pref_wallet_address_key))) {
+            NetworkUtils.URLCreator(sharedPreferences.getString(getString(R.string.pref_wallet_address_key), getString(R.string.pref_wallet_address_default)));
+            try {
+                NetworkUtils.GetNetworkData();
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
 }
+
