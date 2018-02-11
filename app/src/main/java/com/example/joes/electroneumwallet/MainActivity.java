@@ -1,8 +1,11 @@
 package com.example.joes.electroneumwallet;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import java.net.MalformedURLException;
@@ -26,13 +30,14 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     private static TextView Current_ETN_TimeDif;
     private static TextView Unpaid_USD_Balance;
     private static TextView Unpaid_BTC_Balance;
-    private static TextView Address;
 
     private static LinearLayout First_Linear_Layout;
     private static LinearLayout Second_Linear_Layout;
     private static LinearLayout Third_Linear_Layout;
     private static LinearLayout Error_Linear_Layout;
 
+    public static LinearLayout Network_Relative_Layout;
+    public static LinearLayout No_Internet_Relative_Layout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,10 +56,19 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         Second_Linear_Layout = findViewById(R.id.ll_main_second);
         Third_Linear_Layout = findViewById(R.id.ll_main_third);
         Error_Linear_Layout = findViewById(R.id.ll_main_error);
-        try {
-            NetworkUtils.GetNetworkData();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
+
+        Network_Relative_Layout = findViewById(R.id.ll_main_network_pending);
+        No_Internet_Relative_Layout = findViewById(R.id.ll_main_network_no_internet);
+        if (!isDataConnectionAvailable(this)) {
+            No_Internet_Relative_Layout.setVisibility(View.VISIBLE);
+            RemoveResult();
+        } else {
+            try {
+                No_Internet_Relative_Layout.setVisibility(View.GONE);
+                NetworkUtils.GetNetworkData();
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -62,9 +76,8 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         String AddressName = sharedPreferences.getString(getString(R.string.pref_wallet_address_key), getString(R.string.pref_wallet_address_default));
         Log.i("Address Status", AddressName);
-        Address = findViewById(R.id.Address);
         NetworkUtils.URLCreator(AddressName);
-        Address.setText(AddressName);
+
         sharedPreferences.registerOnSharedPreferenceChangeListener(this);
     }
 
@@ -109,11 +122,18 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     public boolean onOptionsItemSelected(MenuItem item) {
         int IDGathered = item.getItemId();
         if (IDGathered == R.id.action_refresh) {
-            try {
-                NetworkUtils.GetNetworkData();
-                return true;
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
+            if (!isDataConnectionAvailable(this)) {
+                No_Internet_Relative_Layout.setVisibility(View.VISIBLE);
+                RemoveResult();
+            } else {
+                try {
+                    No_Internet_Relative_Layout.setVisibility(View.GONE);
+                    setupSharedPreferences();
+                    NetworkUtils.GetNetworkData();
+                    return true;
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
             }
         }
 
@@ -137,6 +157,12 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         Third_Linear_Layout.setVisibility(View.VISIBLE);
         Error_Linear_Layout.setVisibility(View.GONE);
     }
+    static void RemoveResult() {
+        First_Linear_Layout.setVisibility(View.GONE);
+        Second_Linear_Layout.setVisibility(View.GONE);
+        Third_Linear_Layout.setVisibility(View.GONE);
+    }
+
 
     @Override
     protected void onDestroy() {
@@ -156,6 +182,13 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             }
 
         }
+    }
+
+    public static boolean isDataConnectionAvailable(Context context) {
+        ConnectivityManager connectivityManager =
+                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
     }
 }
 

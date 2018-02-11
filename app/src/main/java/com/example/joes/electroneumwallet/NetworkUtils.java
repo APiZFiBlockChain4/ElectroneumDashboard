@@ -2,6 +2,7 @@ package com.example.joes.electroneumwallet;
 
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.View;
 
 
 import org.json.JSONException;
@@ -57,12 +58,16 @@ class NetworkUtils {
             TEMPORARY_URL = "";
             ERROR_TICKER = false;
             MainActivity.CleanUIData();
+            Log.i("WebResult", "ON PRE");
+            MainActivity.RemoveResult();
+            MainActivity.Network_Relative_Layout.setVisibility(View.VISIBLE);
         }
 
         @Override
         protected String doInBackground(URL... urls) {
             URL searchUrl = urls[0];
             String WebResult = "";
+            Log.i("WebResult", "DO IN");
             try {
                 WebResult =  getResponseFromHttpUrl(searchUrl);
                 Log.i("WebResult", WebResult);
@@ -100,13 +105,14 @@ class NetworkUtils {
                 }
             }
             if (TEMPORARY_URL.equals(DONE_URL) && !ERROR_TICKER) {
+                MainActivity.Network_Relative_Layout.setVisibility(View.GONE);
                 MainActivity.UpdateUIWithData();
 
             }
 
         }
     }
-    private static String getResponseFromHttpUrl(URL url) throws IOException {
+    public static String getResponseFromHttpUrl(URL url) throws IOException {
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         try {
             InputStream in = urlConnection.getInputStream();

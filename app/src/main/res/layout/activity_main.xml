@@ -10,6 +10,7 @@
 
 
     <LinearLayout
+        android:visibility="gone"
         android:id="@+id/ll_main_first"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -26,18 +27,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:text="Unpaid Balance"
-            android:textAlignment="center"
-            android:textColor="@android:color/white"
-            android:textSize="13sp"
-            app:layout_constraintTop_toTopOf="parent" />
-
-
-        <TextView
-            android:id="@+id/Address"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="Address"
             android:textAlignment="center"
             android:textColor="@android:color/white"
             android:textSize="13sp"
@@ -85,6 +74,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:visibility="gone"
         android:id="@+id/ll_main_second"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -137,6 +127,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:visibility="gone"
         android:id="@+id/ll_main_third"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -268,7 +259,6 @@
             android:background="@android:color/white">
 
             <TextView
-
                 android:layout_centerInParent="true"
                 android:id="@+id/Header_Error"
                 android:layout_width="wrap_content"
@@ -308,6 +298,106 @@
                 android:textColor="#649FE5"
                 android:textAlignment="center"
                 android:background="@drawable/shape_textview_border"
+                />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            >
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_main_network_pending"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+
+        <RelativeLayout
+
+            android:id="@+id/rl_network"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@android:color/white">
+
+            <ProgressBar
+                android:id="@+id/pb_network"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:layout_centerInParent="true"
+                android:layout_weight="1"
+                />
+
+
+            <TextView
+                android:layout_marginTop="5dp"
+                android:layout_centerInParent="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/pb_network"
+                android:text="Please wait while we updating the result."
+                android:textColor="#6B6B6B"
+                android:textSize="13sp"
+                android:textAlignment="center"
+
+                />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            >
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/ll_main_network_no_internet"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+
+        <RelativeLayout
+
+            android:id="@+id/rl_network_no_internet"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@android:color/white">
+
+            <TextView
+                android:layout_centerInParent="true"
+                android:id="@+id/tv_network_no_internet"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:text="There is no Internet Connection"
+                android:textColor="#6B6B6B"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:layout_marginTop="5dp"
+                android:layout_centerInParent="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_network_no_internet"
+                android:text="Please check your Wi-Fi / Mobile Data."
+                android:textColor="#BF2424"
+                android:textSize="13sp"
+                android:textAlignment="center"
+
                 />
         </RelativeLayout>
 
