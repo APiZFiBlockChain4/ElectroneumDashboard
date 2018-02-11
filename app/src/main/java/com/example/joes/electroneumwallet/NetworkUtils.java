@@ -1,6 +1,7 @@
 package com.example.joes.electroneumwallet;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 
 import org.json.JSONException;
@@ -20,22 +21,30 @@ import java.util.Scanner;
 
 class NetworkUtils {
     // URL Needed for Data Gathering
-    private static String ELECTRONEUM_WALLET_ADDRESS = "etnkDUYrWk78m2LcTiB2WoZrmW25igTvj1oHTQ7fLyJqewp8Bs9BPGm6KEmEFyyjSrEmc2bTgexjcYGqNBmQZkyt3qVSomQt3s";
+    public static String ELECTRONEUM_WALLET_ADDRESS;
+
+
+
     private static String BASE_ELECTRONEUM  = "https://api.etn.spacepools.org/v1";
-    private static String STATS_MINING_ADDRESS = BASE_ELECTRONEUM + "/stats/address/" + ELECTRONEUM_WALLET_ADDRESS;
     private static String ELECTRONEUM_PRICE_TICKER = "https://api.coinmarketcap.com/v1/ticker/electroneum/";
 
-
+    public static String STATS_MINING_ADDRESS;
     private static String TEMPORARY_URL = "";
     private static final String DONE_URL = "DONE";
 
 
     static void GetNetworkData() throws MalformedURLException {
+
+        Log.i("Current Info", "Address: " + STATS_MINING_ADDRESS);
         URL STATS_MINING_ADDRESS_URL = new URL(STATS_MINING_ADDRESS);
         URL ETN_PRICE_TICKER_URL = new URL(ELECTRONEUM_PRICE_TICKER);
 
         new MiningAsyncTask().execute(STATS_MINING_ADDRESS_URL);
         new MiningAsyncTask().execute(ETN_PRICE_TICKER_URL);
+    }
+
+    static void URLCreator(String ELECTRONEUM_WALLET_ADDRESS) {
+        STATS_MINING_ADDRESS = BASE_ELECTRONEUM + "/stats/address/" + ELECTRONEUM_WALLET_ADDRESS;
     }
 
 

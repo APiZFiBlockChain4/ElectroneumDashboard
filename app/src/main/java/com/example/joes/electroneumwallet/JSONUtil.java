@@ -29,10 +29,13 @@ class JSONUtil {
             }
 
 
-
-            Mine_Balance = StatsJson.getString("balance");
-            Double TempBalance = Double.parseDouble(Mine_Balance)/100;
-            Mine_Balance = TempBalance + " ETN";
+            if (StatsJson.has("balance")) {
+                Mine_Balance = StatsJson.getString("balance");
+                Double TempBalance = Double.parseDouble(Mine_Balance) / 100;
+                Mine_Balance = TempBalance + " ETN";
+            } else {
+                Mine_Balance = "0 ETN";
+            }
 
             Mine_LastUpdate = StatsJson.getString("lastShare");
             long LastUpdateMinute = (System.currentTimeMillis()/1000 - Long.parseLong(Mine_LastUpdate))/60;
@@ -40,6 +43,8 @@ class JSONUtil {
 
 
         } catch (JSONException e) {
+            Mine_HashRate = "0";
+            Mine_Balance = "0 ETN";
             e.printStackTrace();
         }
 

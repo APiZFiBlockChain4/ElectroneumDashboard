@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Monitori</string>
+
+    <string name="pref_wallet_address_label">Wallet Address</string>
+    <string name="pref_wallet_address_key" translatable="false">WalletAddress</string>
+    <string name="pref_wallet_address_default" translatable="false">0x</string>
 </resources>
