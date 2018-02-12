@@ -60,8 +60,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         Network_Relative_Layout = findViewById(R.id.ll_main_network_pending);
         No_Internet_Relative_Layout = findViewById(R.id.ll_main_network_no_internet);
         if (!isDataConnectionAvailable(this)) {
-            No_Internet_Relative_Layout.setVisibility(View.VISIBLE);
-            RemoveResult();
+            NoInternetConnectionUI();
         } else {
             try {
                 No_Internet_Relative_Layout.setVisibility(View.GONE);
@@ -71,36 +70,39 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             }
         }
     }
-
+    /*
+    Method Name: setupSharedPreferences
+    Function: When onCreate able to GET Address, and able to auto update without close app with registers
+    */
     private void setupSharedPreferences() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String AddressName = sharedPreferences.getString(getString(R.string.pref_wallet_address_key), getString(R.string.pref_wallet_address_default));
-        Log.i("Address Status", AddressName);
-        NetworkUtils.URLCreator(AddressName);
-
+        NetworkUtils.URLCreator(sharedPreferences.getString(getString(R.string.pref_wallet_address_key), getString(R.string.pref_wallet_address_default)));
         sharedPreferences.registerOnSharedPreferenceChangeListener(this);
     }
 
      public static void UpdateUIWithData() {
+        Double Mine_Balance_Float = Double.parseDouble(JSONUtil.Mine_Balance.substring(0, JSONUtil.Mine_Balance.length()-4));
+        Double ETN_to_USD_Float = Double.parseDouble(JSONUtil.ETN_to_USD) * Mine_Balance_Float;
+        Double ETN_to_BTC_Float = Double.parseDouble(JSONUtil.ETN_to_BTC) * Mine_Balance_Float;
+        DecimalFormat df = new DecimalFormat("#");
+        df.setMaximumFractionDigits(8);
+
         Current_ETN_Price_USD_TextView.setText(JSONUtil.ETN_to_USD);
         Current_ETN_Price_BTC_TextView.setText(JSONUtil.ETN_to_BTC);
         Current_ETN_Price_Change.setText(JSONUtil.ETN_Price_Change);
         Current_ETN_MineSpeed.setText(JSONUtil.Mine_HashRate);
         Current_ETN_Balance.setText(JSONUtil.Mine_Balance);
         Current_ETN_TimeDif.setText(JSONUtil.Mine_LastUpdate);
-         Log.i("Mine Lenght", "AA" + String.valueOf(JSONUtil.Mine_Balance));
-        Double Mine_Balance_Float = Double.parseDouble(JSONUtil.Mine_Balance.substring(0, JSONUtil.Mine_Balance.length()-4));
 
-        Double ETN_to_USD_Float = Double.parseDouble(JSONUtil.ETN_to_USD) * Mine_Balance_Float;
-        Double ETN_to_BTC_Float = Double.parseDouble(JSONUtil.ETN_to_BTC) * Mine_Balance_Float;
-        DecimalFormat df = new DecimalFormat("#");
-        df.setMaximumFractionDigits(8);
         Unpaid_USD_Balance.setText(String.valueOf(ETN_to_USD_Float) + " USD");
         Unpaid_BTC_Balance.setText("0" + String.valueOf(df.format( ETN_to_BTC_Float)) + " BTC");
-         Log.i("Updating Data", "Updating");
+
          ProvideResult();
     }
-
+    /*
+    Method Name: CleanUiData
+    Function: Clean all data when updating data.
+     */
     public static void CleanUIData() {
         Current_ETN_Price_USD_TextView.setText("");
         Current_ETN_Price_BTC_TextView.setText("");
@@ -112,6 +114,10 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         Unpaid_BTC_Balance.setText("");
     }
 
+    /*
+    Method Name: onCreateOptionsMenu
+    Function: Enable Menu Features
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main,menu);
@@ -123,8 +129,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         int IDGathered = item.getItemId();
         if (IDGathered == R.id.action_refresh) {
             if (!isDataConnectionAvailable(this)) {
-                No_Internet_Relative_Layout.setVisibility(View.VISIBLE);
-                RemoveResult();
+                NoInternetConnectionUI();
             } else {
                 try {
                     No_Internet_Relative_Layout.setVisibility(View.GONE);
@@ -145,22 +150,28 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
         return super.onOptionsItemSelected(item);
     }
+
+    static void NoInternetConnectionUI() {
+        First_Linear_Layout.setVisibility(View.GONE);
+        Second_Linear_Layout.setVisibility(View.GONE);
+        Third_Linear_Layout.setVisibility(View.GONE);
+        Error_Linear_Layout.setVisibility(View.GONE);
+        Network_Relative_Layout.setVisibility(View.GONE);
+        No_Internet_Relative_Layout.setVisibility(View.VISIBLE);
+    }
+
     static void ProvideError() {
         First_Linear_Layout.setVisibility(View.GONE);
         Second_Linear_Layout.setVisibility(View.GONE);
         Third_Linear_Layout.setVisibility(View.GONE);
         Error_Linear_Layout.setVisibility(View.VISIBLE);
     }
+
     static void ProvideResult() {
         First_Linear_Layout.setVisibility(View.VISIBLE);
         Second_Linear_Layout.setVisibility(View.VISIBLE);
         Third_Linear_Layout.setVisibility(View.VISIBLE);
         Error_Linear_Layout.setVisibility(View.GONE);
-    }
-    static void RemoveResult() {
-        First_Linear_Layout.setVisibility(View.GONE);
-        Second_Linear_Layout.setVisibility(View.GONE);
-        Third_Linear_Layout.setVisibility(View.GONE);
     }
 
 
