@@ -7,7 +7,7 @@
     android:background="#F6F7F9"
     android:orientation="vertical"
     tools:context="com.example.joes.electroneumwallet.MainActivity">
-
+<!-- -->
 
     <LinearLayout
         android:visibility="gone"

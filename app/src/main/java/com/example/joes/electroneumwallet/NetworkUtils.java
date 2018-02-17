@@ -78,7 +78,9 @@ class NetworkUtils {
 
                 Log.i("WebResult", WebResult);
 
-                if (WebResult.equals(ERROR_URL) || NetworkCode == HttpURLConnection.HTTP_UNAVAILABLE) {
+
+
+                if (WebResult.equals(ERROR_URL)) {
                     TEMPORARY_URL = ERROR_URL;
                 }
                 else {
@@ -94,6 +96,19 @@ class NetworkUtils {
 
         @Override
         protected void onPostExecute(String s) {
+            if ( s.equals("<html>")) {
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                MainActivity.No_Internet_Relative_Layout.setVisibility(View.GONE);
+                try {
+                    NetworkUtils.GetNetworkData();
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
+            }
             Log.i("HTTP", String.valueOf(NetworkCode));
             Log.i("Errror Ticker", TEMPORARY_URL);
             if (TEMPORARY_URL.equals(ERROR_URL)) {
