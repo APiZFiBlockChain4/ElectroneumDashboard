@@ -4,4 +4,13 @@
     <string name="pref_wallet_address_label">Wallet Address</string>
     <string name="pref_wallet_address_key" translatable="false">WalletAddress</string>
     <string name="pref_wallet_address_default" translatable="false">0x</string>
+    <string name="text_unpaid_balance">Unpaid Balance</string>
+    <string name="hash_sec">Hash/Sec</string>
+    <string name="current_electroneum_price">Current Electroneum Price</string>
+    <string name="usd">USD</string>
+    <string name="btc">BTC</string>
+    <string name="percentage_changes">Percentage Changes</string>
+    <string name="invalid_wallet_header">Sorry, Your Wallet is Invalid</string>
+    <string name="open_settings">Open Settings</string>
+    <string name="invalid_wallet_detail">Please enter settings to change your wallet</string>
 </resources>
