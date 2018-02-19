@@ -26,13 +26,13 @@
             android:text="@string/text_unpaid_balance" />
 
         <TextView
-            android:id="@+id/tv_working_child_balance_update_item"
+            android:id="@+id/tv_working_child_balance_update_time"
             style="@style/CenterSmallText"
             android:textStyle="bold"
             tools:text="5 Minutes Ago" />
 
         <TextView
-            android:id="@+id/tv_working_child_unpaid_balance"
+            android:id="@+id/tv_working_child_unpaid_balance_etn"
             style="@style/CenterMediumText"
             android:layout_marginTop="16dp"
             android:textStyle="bold"
@@ -61,7 +61,7 @@
 
         <TextView
             style="@style/MarginSmallText"
-            android:text="Current Hash Speed"
+            android:text="@string/current_hash_speed"
             android:textColor="@color/lightBlueText" />
 
         <View
@@ -127,8 +127,8 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="0dp"
-                android:fontFamily="sans-serif-light"
                 android:text="@string/usd"
+                android:fontFamily="sans-serif-light"
                 android:textColor="@color/lightBlueText" />
         </LinearLayout>
 
@@ -143,8 +143,8 @@
                 android:id="@+id/tv_working_child_price_in_btc"
                 style="@style/MarginMediumText"
                 android:layout_width="wrap_content"
-                android:layout_marginTop="0dp"
                 android:fontFamily="sans-serif-light"
+                android:layout_marginTop="0dp"
                 tools:text="0.0000663" />
 
             <TextView
@@ -153,8 +153,8 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="0dp"
-                android:fontFamily="sans-serif-light"
                 android:text="@string/btc"
+                android:fontFamily="sans-serif-light"
                 android:textColor="@color/lightBlueText" />
         </LinearLayout>
 

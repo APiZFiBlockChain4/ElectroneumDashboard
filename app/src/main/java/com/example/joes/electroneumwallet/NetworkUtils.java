@@ -29,7 +29,7 @@ class NetworkUtils {
 
     private static String TEMPORARY_URL = "";
     private static final String DONE_URL = "DONE";
-    private static final String ERROR_URL = "{\"error\":\"not found\"}";
+    private static final String ERROR_INFO = "{\"error\":\"not found\"}";
     private static boolean ERROR_TICKER;
     private static int NetworkCode;
 
@@ -47,7 +47,7 @@ class NetworkUtils {
     static void URLCreator(String ELECTRONEUM_WALLET_ADDRESS) {
         String BASE_ELECTRONEUM  = "https://api.etn.spacepools.org/v1";
         ERROR_TICKER = false;
-        NetworkCode = 0;
+
         STATS_MINING_ADDRESS = BASE_ELECTRONEUM + "/stats/address/" + ELECTRONEUM_WALLET_ADDRESS;
         ELECTRONEUM_PRICE_TICKER = "https://api.coinmarketcap.com/v1/ticker/electroneum/";
     }
@@ -60,11 +60,8 @@ class NetworkUtils {
         protected void onPreExecute() {
             super.onPreExecute();
             TEMPORARY_URL = "";
-
-            MainActivity.CleanUIData();
+            NetworkCode = 0;
             Log.i("WebResult", "ON PRE");
-            MainActivity.NoInternetConnectionUI();
-            MainActivity.Network_Relative_Layout.setVisibility(View.VISIBLE);
         }
 
         @Override
@@ -73,20 +70,8 @@ class NetworkUtils {
             String WebResult = "";
             Log.i("WebResult", "DO IN");
             try {
-
                 WebResult =  getResponseFromHttpUrl(searchUrl);
-
-                Log.i("WebResult", WebResult);
-
-
-
-                if (WebResult.equals(ERROR_URL)) {
-                    TEMPORARY_URL = ERROR_URL;
-                }
-                else {
-                    TEMPORARY_URL = searchUrl.toString();
-                }
-
+                TEMPORARY_URL = searchUrl.toString();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -96,27 +81,28 @@ class NetworkUtils {
 
         @Override
         protected void onPostExecute(String s) {
-            if ( s.equals("<html>")) {
+            // If Wallet is Invalid
+            Log.i("Result", s);
+            if (s.equals(ERROR_INFO)) {
+                MainActivity.ShowInvalidWallet();
+                ERROR_TICKER = true;
+            }
+            //If Error 503
+            if (NetworkCode == HttpURLConnection.HTTP_UNAVAILABLE) {
                 try {
-                    Thread.sleep(5000);
+                    Thread.sleep(0);
+                    NetworkUtils.GetNetworkData();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
-                }
-                MainActivity.No_Internet_Relative_Layout.setVisibility(View.GONE);
-                try {
-                    NetworkUtils.GetNetworkData();
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                 }
             }
             Log.i("HTTP", String.valueOf(NetworkCode));
             Log.i("Errror Ticker", TEMPORARY_URL);
-            if (TEMPORARY_URL.equals(ERROR_URL)) {
-                MainActivity.ProvideError();
-                ERROR_TICKER = true;
-            }
 
-            else if (TEMPORARY_URL.equals(STATS_MINING_ADDRESS)) {
+            Log.i("temp Data", TEMPORARY_URL);
+            if (TEMPORARY_URL.equals(STATS_MINING_ADDRESS)) {
                 JSONUtil.GetMiningData(s);
 
             }
@@ -129,9 +115,11 @@ class NetworkUtils {
                 }
             }
             Log.i("Errror Ticker", String.valueOf(ERROR_TICKER));
+
             if (TEMPORARY_URL.equals(DONE_URL) && !ERROR_TICKER) {
-                MainActivity.Network_Relative_Layout.setVisibility(View.GONE);
                 MainActivity.UpdateUIWithData();
+
+                MainActivity.ShowResult();
 
             }
 
